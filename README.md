@@ -21,7 +21,8 @@ Projekt jest obecnie w fazie rozwoju i obejmuje zarówno projekt elektroniki (PC
 * **Mikrokontroler:** Rodzina STM32H5 (ARM Cortex-M33)
 * **Układ pomiarowy:** Analog Devices LTC2983 (Multi-Sensor High Accuracy Digital Temperature Measurement System)
 * **Wyświetlacz:** Monochromatyczny LCD / OLED
-* **Interfejsy:** * Gniazdo Ethernet (RJ45)
+* **Interfejsy:** 
+    * Gniazdo Ethernet (RJ45)
     * Slot na kartę pamięci uSD
     * Złącza dla 8 termopar
 * **Sterowanie lokalne:** Enkoder obrotowy z przyciskiem + przyciski funkcyjne pod ekranem.
