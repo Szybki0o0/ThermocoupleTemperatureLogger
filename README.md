@@ -26,6 +26,7 @@ Projekt jest obecnie w fazie rozwoju i obejmuje zarówno projekt elektroniki (PC
     * Slot na kartę pamięci uSD
     * Złącza dla 8 termopar
 * **Sterowanie lokalne:** Enkoder obrotowy z przyciskiem + przyciski funkcyjne pod ekranem.
+* **Zasilanie:** Zasilacz 230VAC → 5VDC-12VDC w postaci gotowego modułu na PCB lub wykorzystanie zasilania przez gniazdo DC.
 
 ## 💻 Oprogramowanie (Software)
 
