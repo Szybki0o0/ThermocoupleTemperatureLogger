@@ -1,0 +1,6 @@
+Record=TopLevelDocument|FileName=1-Block-diagram.SchDoc|SheetNumber=1
+Record=NoMainPathDocument|SourceDocument=1-Block-diagram.SchDoc|FileName=2-STM32H563.SchDoc|SheetNumber=2
+Record=NoMainPathDocument|SourceDocument=1-Block-diagram.SchDoc|FileName=3-Power-Supply.SchDoc|SheetNumber=3
+Record=NoMainPathDocument|SourceDocument=1-Block-diagram.SchDoc|FileName=4-Ethernet.SchDoc|SheetNumber=4
+Record=NoMainPathDocument|SourceDocument=1-Block-diagram.SchDoc|FileName=5-SD-Card.SchDoc|SheetNumber=5
+Record=NoMainPathDocument|SourceDocument=1-Block-diagram.SchDoc|FileName=6-Connectors.SchDoc|SheetNumber=6
