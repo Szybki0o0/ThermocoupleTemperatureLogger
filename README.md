@@ -49,4 +49,4 @@ Projekt jest w trakcie realizacji. Obecnie trwają prace nad:
  - TODO || Zakładany podział dynamiczny podczas realizacji projektu.
 
 ---
-*Autor: Mateusz Gąsiorowski && Jakub Konior*
+*Autorzy: Mateusz Gąsiorowski && Jakub Konior*
