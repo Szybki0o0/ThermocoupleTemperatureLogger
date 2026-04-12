@@ -1,3 +1,18 @@
-build
+# Katalogi z plikami po kompilacji (Build)
+build/
+CMakeCache.txt
+CMakeFiles/
+
+# Pliki tymczasowe STM32CubeMX
 mx.scratch
-!.settings
+.mxproject
+
+# Cache serwera językowego (IntelliSense)
+.clangd/
+
+# Wyjątki - pliki, które chcemy wymusić do śledzenia
+!.settings/
+
+# Opcjonalnie: Pliki systemowe
+.DS_Store
+Thumbs.db
