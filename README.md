@@ -48,5 +48,8 @@ Projekt jest w trakcie realizacji. Obecnie trwają prace nad:
 ## ➗ Podział prac
  - TODO || Zakładany podział dynamiczny podczas realizacji projektu.
 
+## Link do dokumentacji
+https://aghedupl-my.sharepoint.com/:w:/g/personal/jakonior_student_agh_edu_pl/IQCC4sxuc3X9QIpdb9umY-btAZW3T9In2jfk0HmtnqKJi5U?e=CjhGaD
+
 ---
 *Autorzy: Mateusz Gąsiorowski && Jakub Konior*
