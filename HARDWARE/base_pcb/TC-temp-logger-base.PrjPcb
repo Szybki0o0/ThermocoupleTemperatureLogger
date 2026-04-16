@@ -12,9 +12,9 @@ SeparateFolders=0
 TemplateLocationPath=
 PinSwapBy_Netlabel=1
 PinSwapBy_Pin=1
-AllowPortNetNames=0
+AllowPortNetNames=1
 AllowSheetEntryNetNames=1
-AppendSheetNumberToLocalNets=0
+AppendSheetNumberToLocalNets=1
 NetlistSinglePinNets=0
 DefaultConfiguration=Sources
 UserID=0xFFFFFFFF
@@ -22,7 +22,7 @@ DefaultPcbProtel=1
 DefaultPcbPcad=0
 ReorderDocumentsOnCompile=1
 NameNetsHierarchically=0
-PowerPortNamesTakePriority=0
+PowerPortNamesTakePriority=1
 AutoSheetNumbering=1
 AutoCrossReferences=1
 NewIndexingOfSheetSymbols=1
@@ -1384,10 +1384,14 @@ PartTypes=0
 
 [NetInfos]
 Net1=NetName=3V6|NetColor=clFuchsia
-Net2=NetName=VDD-3V3|NetColor=clRed
-Net3=NetName=VDDCR|NetColor=clBlack
-Net4=NetName=VDD-ETH-3V3|NetColor=$000099FF
-Net5=NetName=VDDIO|NetColor=clRed
+Net2=NetName=5V|NetColor=$0032C2F1
+Net3=NetName=5V-PS|NetColor=$0032C2F1
+Net4=NetName=GND|NetColor=clBlue
+Net5=NetName=GND_1|NetColor=clBlue
+Net6=NetName=VDD-3V3|NetColor=clRed
+Net7=NetName=VDDCR|NetColor=clBlack
+Net8=NetName=VDD-ETH-3V3|NetColor=$000099FF
+Net9=NetName=VDDIO|NetColor=clRed
 
 [Comparison Options]
 ComparisonOptions0=Kind=Net|MinPercent=75|MinMatch=3|ShowMatch=0|UseName=-1|InclAllRules=0
