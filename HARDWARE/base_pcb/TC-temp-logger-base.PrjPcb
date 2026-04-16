@@ -1,6 +1,6 @@
 ﻿[Design]
 Version=1.0
-HierarchyMode=2
+HierarchyMode=4
 ChannelRoomNamingStyle=0
 ReleasesFolder=
 ChannelDesignatorFormatString=$Component_$RoomName
@@ -357,6 +357,23 @@ DocumentUniqueId=
 
 [Document19]
 DocumentPath=2-STM32H563.Harness
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=0
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=
+
+[Document20]
+DocumentPath=4-Ethernet.Harness
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -1364,6 +1381,13 @@ SelectedOnly=0
 UpdateVariants=1
 UpdateToLatestRevision=1
 PartTypes=0
+
+[NetInfos]
+Net1=NetName=3V6|NetColor=clFuchsia
+Net2=NetName=VDD-3V3|NetColor=clRed
+Net3=NetName=VDDCR|NetColor=clBlack
+Net4=NetName=VDD-ETH-3V3|NetColor=$000099FF
+Net5=NetName=VDDIO|NetColor=clRed
 
 [Comparison Options]
 ComparisonOptions0=Kind=Net|MinPercent=75|MinMatch=3|ShowMatch=0|UseName=-1|InclAllRules=0
