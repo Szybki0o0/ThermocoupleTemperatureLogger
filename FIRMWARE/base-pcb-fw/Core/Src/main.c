@@ -17,9 +17,11 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include "app_threadx.h"
 #include "main.h"
 #include "eth.h"
 #include "gpdma.h"
+#include "i2c.h"
 #include "sdmmc.h"
 #include "spi.h"
 #include "gpio.h"
@@ -99,9 +101,14 @@ int main(void)
   MX_SDMMC1_SD_Init();
   MX_SPI1_Init();
   MX_SPI2_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
+
+  MX_ThreadX_Init();
+
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
