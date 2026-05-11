@@ -57,8 +57,28 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define CardDetect_Pin GPIO_PIN_13
-#define CardDetect_GPIO_Port GPIOC
+#define SD_Detect_Pin GPIO_PIN_13
+#define SD_Detect_GPIO_Port GPIOC
+#define USER_LED0_Pin GPIO_PIN_7
+#define USER_LED0_GPIO_Port GPIOE
+#define USER_LED2_Pin GPIO_PIN_9
+#define USER_LED2_GPIO_Port GPIOE
+#define USER_BUTTON1_Pin GPIO_PIN_10
+#define USER_BUTTON1_GPIO_Port GPIOE
+#define USER_BUTTON2_Pin GPIO_PIN_11
+#define USER_BUTTON2_GPIO_Port GPIOE
+#define USER_BUTTON4_Pin GPIO_PIN_13
+#define USER_BUTTON4_GPIO_Port GPIOE
+#define USER_BUTTON5_Pin GPIO_PIN_14
+#define USER_BUTTON5_GPIO_Port GPIOE
+#define USER_BUTTON6_Pin GPIO_PIN_15
+#define USER_BUTTON6_GPIO_Port GPIOE
+#define Encoder_CH1_Pin GPIO_PIN_6
+#define Encoder_CH1_GPIO_Port GPIOC
+#define Encoder_BUTTON_Pin GPIO_PIN_8
+#define Encoder_BUTTON_GPIO_Port GPIOC
+#define Encoder_CH2_Pin GPIO_PIN_5
+#define Encoder_CH2_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

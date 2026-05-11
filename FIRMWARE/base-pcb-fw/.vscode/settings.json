@@ -1,9 +1,13 @@
 {
     "cmake.cmakePath": "cube-cmake",
     "cmake.configureArgs": [
+        "-DCMAKE_TOOLCHAIN_FILE=C:/Users/konio/OneDrive/Pulpit/ELEKTRONIK/Studia-magisterskie/1sem/Sensory/Projekt/prj04/FIRMWARE/base-pcb-fw/cmake/gcc-arm-none-eabi.cmake",
         "-DCMAKE_COMMAND=cube-cmake"
     ],
-    "cmake.makeProgram": "C:\\\\Program Files\\\\MATLAB\\\\R2022b\\\\toolbox\\\\shared\\\\coder\\\\ninja\\\\win64\\\\ninja.exe",
+    "cmake.environment": {
+        "PATH": "${env:PATH};C:/Users/konio/.vscode/extensions/stmicroelectronics.stm32cube-ide-core-1.3.0-win32-x64/resources/binaries/win32/x86_64;C:/ST/STM32CubeIDE_1.18.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin;C:/Program Files/MATLAB/R2022b/toolbox/shared/coder/ninja/win64"
+    },
+    "cmake.makeProgram": "C:/Program Files/MATLAB/R2022b/toolbox/shared/coder/ninja/win64/ninja.exe",
     "cmake.preferredGenerators": [
         "Ninja"
     ],

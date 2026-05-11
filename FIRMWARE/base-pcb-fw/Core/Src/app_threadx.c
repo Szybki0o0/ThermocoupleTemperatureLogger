@@ -23,7 +23,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,14 +57,42 @@
   */
 UINT App_ThreadX_Init(VOID *memory_ptr)
 {
-  UINT ret = TX_SUCCESS;
+  UINT status = TX_SUCCESS;
   /* USER CODE BEGIN App_ThreadX_MEM_POOL */
+  TX_THREAD *display_thread_ptr;
+  UCHAR *display_stack_ptr;
 
+  status = tx_byte_allocate((TX_BYTE_POOL *)memory_ptr, (VOID **)&display_thread_ptr, sizeof(TX_THREAD), TX_NO_WAIT);
+  if (status != TX_SUCCESS)
+  {
+    return status;
+  }
+
+  status = tx_byte_allocate((TX_BYTE_POOL *)memory_ptr, (VOID **)&display_stack_ptr, 2048, TX_NO_WAIT);
+  if (status != TX_SUCCESS)
+  {
+    return status;
+  }
+
+  status = tx_thread_create(display_thread_ptr,
+                            "Display Thread",
+                            display_thread_entry,
+                            0,
+                            display_stack_ptr,
+                            2048,
+                            10,
+                            10,
+                            TX_NO_TIME_SLICE,
+                            TX_AUTO_START);
+  if (status != TX_SUCCESS)
+  {
+    return status;
+  }
   /* USER CODE END App_ThreadX_MEM_POOL */
   /* USER CODE BEGIN App_ThreadX_Init */
   /* USER CODE END App_ThreadX_Init */
 
-  return ret;
+  return status;
 }
 
   /**
@@ -87,5 +114,4 @@ void MX_ThreadX_Init(void)
 }
 
 /* USER CODE BEGIN 1 */
-
 /* USER CODE END 1 */
