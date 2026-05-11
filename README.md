@@ -18,13 +18,13 @@ Projekt jest obecnie w fazie rozwoju i obejmuje zarówno projekt elektroniki (PC
 
 ## 🛠️ Architektura Sprzętowa (Hardware)
 
-* **Mikrokontroler:** Rodzina STM32H5 (ARM Cortex-M33)
+* **Mikrokontroler:** Rodzina STM32H563ZI (ARM Cortex-M33)
 * **Układ pomiarowy:** Analog Devices LTC2983 (Multi-Sensor High Accuracy Digital Temperature Measurement System)
 * **Wyświetlacz:** Monochromatyczny LCD / OLED
 * **Interfejsy:** 
     * Gniazdo Ethernet (RJ45)
     * Slot na kartę pamięci uSD
-    * Złącza dla 8 termopar
+    * Konfigurowalny panel przedni do podłączenia czujników temperatory
 * **Sterowanie lokalne:** Enkoder obrotowy z przyciskiem + przyciski funkcyjne pod ekranem.
 * **Zasilanie:** Zasilacz 230VAC → 5VDC-12VDC w postaci gotowego modułu na PCB lub wykorzystanie zasilania przez gniazdo DC.
 
@@ -37,16 +37,27 @@ Projekt jest obecnie w fazie rozwoju i obejmuje zarówno projekt elektroniki (PC
 
 ## 🚀 Status projektu
 
-Projekt jest w trakcie realizacji. Obecnie trwają prace nad:
-- [ ] Konfiguracją peryferiów dla STM32H5
-- [ ] Opracowaniem schematu i projektu PCB
+Hardware:
+- [x] Konfiguracją peryferiów dla STM32H5
+- [X] Schemat
+- [X] projekt PCB
+- [ ] Montaż PCB
+- [ ] Uruchomienie PCB
+
+Software:
 - [ ] Integracją systemu operacyjnego ThreadX
 - [ ] Napisaniem sterownika do obsługi LTC2983
 - [ ] Implementacją parsera komend SCPI
 - [ ] Opracowaniem UI
 
 ## ➗ Podział prac
- - TODO || Zakładany podział dynamiczny podczas realizacji projektu.
+- Mateusz Gąsiorowski: 
+  - Konfiguracja Peryferiów STM32
+  - Schemat
+  - Projekt PCB
+ 
+- Jakub Konior:
+  - TODO
 
 ## Link do dokumentacji
 https://aghedupl-my.sharepoint.com/:w:/g/personal/jakonior_student_agh_edu_pl/IQCC4sxuc3X9QIpdb9umY-btAZW3T9In2jfk0HmtnqKJi5U?e=CjhGaD
