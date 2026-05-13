@@ -81,7 +81,8 @@ void Error_Handler(void);
 #define Encoder_CH2_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
-
+#define USER_LED1_Pin GPIO_PIN_8
+#define USER_LED1_GPIO_Port GPIOE
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

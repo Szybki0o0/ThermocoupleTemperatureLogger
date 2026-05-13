@@ -73,13 +73,23 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  __disable_irq();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
+
+  /* Nucleo-H563ZI user LED is on PB0 */
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+  GPIO_InitTypeDef led_init = {0};
+  led_init.Pin = GPIO_PIN_0;
+  led_init.Mode = GPIO_MODE_OUTPUT_PP;
+  led_init.Pull = GPIO_NOPULL;
+  led_init.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &led_init);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
 
   /* USER CODE BEGIN Init */
 
@@ -105,7 +115,7 @@ int main(void)
   MX_I2C1_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-
+  __enable_irq();
   /* USER CODE END 2 */
 
   MX_ThreadX_Init();
