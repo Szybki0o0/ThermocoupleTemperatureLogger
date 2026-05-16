@@ -66,7 +66,7 @@
 /*#define HAL_NAND_MODULE_ENABLED */
 /*#define HAL_NOR_MODULE_ENABLED */
 /*#define HAL_OPAMP_MODULE_ENABLED */
-/*#define HAL_XSPI_MODULE_ENABLED */
+#define HAL_XSPI_MODULE_ENABLED
 /*#define HAL_OTFDEC_MODULE_ENABLED */
 /*#define HAL_PKA_MODULE_ENABLED */
 /*#define HAL_RNG_MODULE_ENABLED */
@@ -86,7 +86,7 @@
 /*#define HAL_USART_MODULE_ENABLED */
 /*#define HAL_WWDG_MODULE_ENABLED */
 /*#define HAL_PSSI_MODULE_ENABLED */
-/*#define HAL_ICACHE_MODULE_ENABLED */
+#define HAL_ICACHE_MODULE_ENABLED
 /*#define HAL_PCD_MODULE_ENABLED */
 #define HAL_GPIO_MODULE_ENABLED
 #define HAL_EXTI_MODULE_ENABLED
@@ -184,7 +184,7 @@
   */
 
 #define  VDD_VALUE                  3300UL /*!< Value of VDD in mv */
-#define  TICK_INT_PRIORITY          (14UL)  /*!< tick interrupt priority */
+#define  TICK_INT_PRIORITY          (15UL)  /*!< tick interrupt priority (lowest by default) */
 #define  USE_RTOS                   0U
 #define  PREFETCH_ENABLE            0U               /*!< Enable prefetch */
 

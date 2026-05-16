@@ -41,6 +41,12 @@ add_executable(${CMAKE_PROJECT_NAME})
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
 
+# Force C++ compilation for CubeMX-generated C files that include C++ headers
+set_source_files_properties(
+    Core/Src/app_threadx.c
+    PROPERTIES LANGUAGE CXX
+)
+
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined library search paths
@@ -48,8 +54,9 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    Core/Src/display_task.cpp
-    App/Src/oled.cpp
+    Core/Src/main.cpp
+    App/Src/lcd_i2c.cpp
+    App/Src/threads/LedThread.cpp
 )
 
 # Add include paths

@@ -20,9 +20,10 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "app_threadx.h"
-
+#include "main.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "threads/LedThread.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,7 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define THREAD_STACK_SIZE 1024
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -42,12 +43,12 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-
+uint8_t thread_stack1[THREAD_STACK_SIZE];
+TX_THREAD ledThread;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-
 /* USER CODE END PFP */
 
 /**
@@ -57,42 +58,14 @@
   */
 UINT App_ThreadX_Init(VOID *memory_ptr)
 {
-  UINT status = TX_SUCCESS;
+  UINT ret = TX_SUCCESS;
   /* USER CODE BEGIN App_ThreadX_MEM_POOL */
-  TX_THREAD *display_thread_ptr;
-  UCHAR *display_stack_ptr;
-
-  status = tx_byte_allocate((TX_BYTE_POOL *)memory_ptr, (VOID **)&display_thread_ptr, sizeof(TX_THREAD), TX_NO_WAIT);
-  if (status != TX_SUCCESS)
-  {
-    return status;
-  }
-
-  status = tx_byte_allocate((TX_BYTE_POOL *)memory_ptr, (VOID **)&display_stack_ptr, 2048, TX_NO_WAIT);
-  if (status != TX_SUCCESS)
-  {
-    return status;
-  }
-
-  status = tx_thread_create(display_thread_ptr,
-                            "Display Thread",
-                            display_thread_entry,
-                            0,
-                            display_stack_ptr,
-                            2048,
-                            10,
-                            10,
-                            TX_NO_TIME_SLICE,
-                            TX_AUTO_START);
-  if (status != TX_SUCCESS)
-  {
-    return status;
-  }
   /* USER CODE END App_ThreadX_MEM_POOL */
   /* USER CODE BEGIN App_ThreadX_Init */
+  tx_thread_create(&ledThread,(CHAR*)"LED",LedThread::entry,0x1234,thread_stack1,THREAD_STACK_SIZE,15,15,1,TX_AUTO_START);
   /* USER CODE END App_ThreadX_Init */
 
-  return status;
+  return ret;
 }
 
   /**
@@ -114,4 +87,5 @@ void MX_ThreadX_Init(void)
 }
 
 /* USER CODE BEGIN 1 */
+
 /* USER CODE END 1 */
