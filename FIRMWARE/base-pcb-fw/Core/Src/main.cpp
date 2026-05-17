@@ -6,16 +6,4 @@
 extern "C" void cpp_main(void)
 {
 
-    LCD_I2C lcd(&hi2c1, 0x27);
-    if (lcd.begin())
-    {
-        lcd.print("LCD OK");
-    }
-    else
-    {
-        lcd = LCD_I2C(&hi2c1, 0x3F);
-        if (lcd.begin())
-            lcd.print("LCD OK (3F)");
-    }
-
 }
