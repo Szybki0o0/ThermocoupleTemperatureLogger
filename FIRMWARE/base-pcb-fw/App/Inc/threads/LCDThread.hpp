@@ -7,5 +7,5 @@ class LCDThread {
         static void entry(ULONG arg);
     private:
         static constexpr ULONG sleepTicks = 250;
-        static constexpr ULONG testvalue = 25;
+        static constexpr uint8_t testvalue = 25;
 };

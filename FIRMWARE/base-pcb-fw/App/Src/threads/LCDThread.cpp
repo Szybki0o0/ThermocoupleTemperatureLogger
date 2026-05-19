@@ -1,12 +1,11 @@
 #include "i2c.h"
 #include "threads/LCDThread.hpp"
 #include "lcd_i2c.hpp"
-#include <cstdio>
 
-void LCDThread::entry(ULONG arg) {
-    uint8_t col = 0;
-    uint8_t row = 0;
+void LCDThread::entry(ULONG arg)
+{
     LCD_I2C lcd(&hi2c1, 0x27);
+
     if (lcd.begin())
     {
         lcd.print("LCD OK");
@@ -14,18 +13,34 @@ void LCDThread::entry(ULONG arg) {
         lcd.clear();
     }
 
-    lcd.setCursor(col,row);
-    for(int i = 1;i <= 8;i++) {
-        char buffer[16];
-        snprintf(buffer, sizeof(buffer), "T%d", i);
-        lcd.print(buffer);
-        lcd.setCursor(col+4,row);
-        col += 4;
-        if(i == 4) {
-            row = 1;
-            col = 0;
-            lcd.setCursor(col,row);
-        }
-    } 
-}
+    for(uint8_t i = 1; i <= 8; i++) {
+        uint8_t col = ((i - 1) % 4) * 4;
+        uint8_t row = (i - 1) / 4;
 
+        lcd.setCursor(col, row);
+
+        lcd.printf("T%d", i);
+    }
+
+    while(1) {
+        lcd.setCursor(2, 0);
+        lcd.printf("%d", testvalue);
+        lcd.setCursor(6, 0);
+        lcd.printf("%d", testvalue);
+        lcd.setCursor(10, 0);
+        lcd.printf("%d", testvalue);
+        lcd.setCursor(14, 0);
+        lcd.printf("%d", testvalue);
+        
+        lcd.setCursor(2, 1);
+        lcd.printf("%d", testvalue);
+        lcd.setCursor(6, 1);
+        lcd.printf("%d", testvalue);
+        lcd.setCursor(10, 1);
+        lcd.printf("%d", testvalue);
+        lcd.setCursor(14, 1);
+        lcd.printf("%d", testvalue);
+
+        tx_thread_sleep(50);
+    }
+}
