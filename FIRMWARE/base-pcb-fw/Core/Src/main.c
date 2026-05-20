@@ -26,7 +26,6 @@
 #include "octospi.h"
 #include "sdmmc.h"
 #include "spi.h"
-#include "stm32h5xx_hal.h"
 #include "tim.h"
 #include "gpio.h"
 
@@ -94,6 +93,10 @@ int main(void)
   /* Configure the peripherals common clocks */
   PeriphCommonClock_Config();
 
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_GPDMA1_Init();
@@ -106,6 +109,7 @@ int main(void)
   MX_OCTOSPI1_Init();
   MX_ICACHE_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
   cpp_main();
   /* USER CODE END 2 */
 
@@ -118,6 +122,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

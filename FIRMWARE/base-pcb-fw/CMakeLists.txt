@@ -58,6 +58,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     App/Src/lcd_i2c.cpp
     App/Src/threads/LedThread.cpp
     App/Src/threads/LCDThread.cpp
+    App/Src/threads/EncoderThread.cpp
 )
 
 # Add include paths
