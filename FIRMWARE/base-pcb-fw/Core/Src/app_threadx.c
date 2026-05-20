@@ -26,6 +26,7 @@
 #include "threads/LedThread.hpp"
 #include "threads/LCDThread.hpp"
 #include "threads/EncoderThread.hpp"
+#include "threads/EthThread.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,9 +49,11 @@
 uint8_t thread_stack1[THREAD_STACK_SIZE];
 uint8_t thread_stack2[THREAD_STACK_SIZE];
 uint8_t thread_stack3[THREAD_STACK_SIZE];
+uint8_t thread_stack4[THREAD_STACK_SIZE];
 TX_THREAD ledThread;
 TX_THREAD lcdThread;
 TX_THREAD encThread;
+TX_THREAD ethThread;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -71,6 +74,7 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
   tx_thread_create(&ledThread,(CHAR*)"LED",LedThread::entry,0x1234,thread_stack1,THREAD_STACK_SIZE,15,15,1,TX_AUTO_START);
   tx_thread_create(&lcdThread,(CHAR*)"LCD",LCDThread::entry,0x1234,thread_stack2,THREAD_STACK_SIZE,15,15,1,TX_AUTO_START);
   tx_thread_create(&encThread,(CHAR*)"ENC",EncoderThread::entry,0x1234,thread_stack3,THREAD_STACK_SIZE,15,15,1,TX_AUTO_START);
+  tx_thread_create(&ethThread,(CHAR*)"ETH",EthThread::entry,0x5678,thread_stack4,THREAD_STACK_SIZE,15,15,1,TX_AUTO_START);
   /* USER CODE END App_ThreadX_Init */
 
   return ret;
