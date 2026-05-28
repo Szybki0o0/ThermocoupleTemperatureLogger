@@ -55,6 +55,7 @@ void DebugMon_Handler(void);
 void GPDMA1_Channel1_IRQHandler(void);
 void TIM6_IRQHandler(void);
 void OCTOSPI1_IRQHandler(void);
+void ETH_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */

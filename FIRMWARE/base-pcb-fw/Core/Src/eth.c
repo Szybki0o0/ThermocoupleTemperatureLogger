@@ -54,7 +54,7 @@ void MX_ETH_Init(void)
   heth.Init.MediaInterface = HAL_ETH_RMII_MODE;
   heth.Init.TxDesc = DMATxDscrTab;
   heth.Init.RxDesc = DMARxDscrTab;
-  heth.Init.RxBuffLen = 1524;
+  heth.Init.RxBuffLen = 1536;
 
   /* USER CODE BEGIN MACADDRESS */
 
@@ -119,6 +119,9 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef* ethHandle)
     GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
     HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
+    /* ETH interrupt Init */
+    HAL_NVIC_SetPriority(ETH_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(ETH_IRQn);
   /* USER CODE BEGIN ETH_MspInit 1 */
 
   /* USER CODE END ETH_MspInit 1 */
@@ -155,6 +158,8 @@ void HAL_ETH_MspDeInit(ETH_HandleTypeDef* ethHandle)
 
     HAL_GPIO_DeInit(GPIOG, GPIO_PIN_11|GPIO_PIN_13|GPIO_PIN_14);
 
+    /* ETH interrupt Deinit */
+    HAL_NVIC_DisableIRQ(ETH_IRQn);
   /* USER CODE BEGIN ETH_MspDeInit 1 */
 
   /* USER CODE END ETH_MspDeInit 1 */

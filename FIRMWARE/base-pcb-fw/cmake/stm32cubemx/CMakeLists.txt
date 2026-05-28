@@ -15,9 +15,12 @@ set(MX_Defines_Syms
 set(MX_Include_Dirs
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Core/Inc
     ${CMAKE_CURRENT_SOURCE_DIR}/../../NetXDuo/App
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../NetXDuo/Target
     ${CMAKE_CURRENT_SOURCE_DIR}/../../AZURE_RTOS/App
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/STM32H5xx_HAL_Driver/Inc
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/STM32H5xx_HAL_Driver/Inc/Legacy
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/BSP/Components/lan8742
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/netxduo/common/drivers/ethernet
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/inc
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/CMSIS/Device/ST/STM32H5xx/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/netxduo/common/inc
@@ -82,6 +85,7 @@ set(STM32_Drivers_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_sdio.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_spi.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/STM32H5xx_HAL_Driver/Src/stm32h5xx_hal_spi_ex.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/BSP/Components/lan8742/lan8742.c
 )
 
 # Drivers Midllewares
@@ -255,6 +259,7 @@ set(ThreadX_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/txe_timer_info_get.c
 )
 set(NetXDuo_Src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/netxduo/common/drivers/ethernet/nx_stm32_eth_driver.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/netxduo/common/src/nx_arp_announce_send.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/netxduo/common/src/nx_arp_dynamic_entries_invalidate.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/netxduo/common/src/nx_arp_dynamic_entry_delete.c
@@ -744,6 +749,7 @@ set(NetXDuo_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/netxduo/common/src/nxd_nd_cache_invalidate.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/netxduo/common/src/nxd_nd_cache_ip_address_find.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/netxduo/common/src/nx_http_proxy_client.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/netxduo/common/drivers/ethernet/lan8742/nx_stm32_phy_driver.c
 )
 
 # Link directories setup

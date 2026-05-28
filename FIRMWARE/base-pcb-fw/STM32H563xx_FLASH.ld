@@ -40,6 +40,7 @@ ENTRY(Reset_Handler)
 MEMORY
 {
   RAM    (xrw)    : ORIGIN = 0x20000000,   LENGTH = 640K
+  SRAM3  (xrw)    : ORIGIN = 0x30040000,   LENGTH = 32K
   FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 2048K
 }
 /* Highest address of the user mode stack */
@@ -234,4 +235,17 @@ SECTIONS
   }
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
+
+  .tcp_sec (NOLOAD) :
+  {
+    . = ABSOLUTE(0x30040000);
+    *(.RxDecripSection)
+
+    . = ABSOLUTE(0x30040060);
+    *(.TxDecripSection)
+
+    . = ABSOLUTE(0x30040200);
+    *(.NetXPoolSection)
+
+  } >SRAM3 
 }
