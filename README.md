@@ -41,13 +41,13 @@ Hardware:
 - [x] Konfiguracją peryferiów dla STM32H5
 - [X] Schemat
 - [X] projekt PCB
-- [ ] Montaż PCB
-- [ ] Uruchomienie PCB
+- [X] Montaż PCB
+- [~] Uruchomienie PCB
 
 Software:
-- [ ] Integracją systemu operacyjnego ThreadX
-- [ ] Napisaniem sterownika do obsługi LTC2983
-- [ ] Implementacją parsera komend SCPI
+- [X] Integracja systemu operacyjnego ThreadX
+- [ ] Napisanie sterownika do obsługi LTC2983
+- [X] Implementacją parsera komend SCPI
 - [ ] Opracowaniem UI
 
 ## ➗ Podział prac
@@ -55,12 +55,10 @@ Software:
   - Konfiguracja Peryferiów STM32
   - Schemat
   - Projekt PCB
+  - Montaż i uruchomienie
  
 - Jakub Konior:
   - TODO
-
-## Link do dokumentacji
-https://aghedupl-my.sharepoint.com/:w:/g/personal/jakonior_student_agh_edu_pl/IQCC4sxuc3X9QIpdb9umY-btAZW3T9In2jfk0HmtnqKJi5U?e=CjhGaD
 
 ---
 *Autorzy: Mateusz Gąsiorowski && Jakub Konior*
