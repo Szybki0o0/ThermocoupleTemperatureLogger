@@ -24,6 +24,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "main.h"
+#include "nx_stm32_phy_driver.h"
+#include "ChannelManager.hpp"
+#include "ScpiParser.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,11 +45,12 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-TX_THREAD      NxAppThread;
+/* USER CODE BEGIN PV */
 NX_PACKET_POOL NxAppPool;
 NX_IP          NetXDuoEthIpInstance;
-/* USER CODE BEGIN PV */
-static NX_TCP_SOCKET TcpServer;
+NX_TCP_SOCKET  TcpServer;
+TX_THREAD      NxAppThread;
+static ScpiParser scpi_parser;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -183,19 +187,109 @@ static VOID nx_app_thread_entry (ULONG thread_input)
   /* USER CODE BEGIN Nx_App_Thread_Entry 0 */
   UINT ret;
   ULONG actual_status;
+  int i;
+  int32_t link_state;
 
-  while (nx_ip_status_check(&NetXDuoEthIpInstance, NX_IP_INITIALIZE_DONE, &actual_status, NX_APP_DEFAULT_TIMEOUT) != NX_SUCCESS)
+  /* Initialize channel manager */
+  chanMgr.reset();
+  printf("ETH: SCPI initialized, %d channels\r\n", TC_NUM_CHANNELS);
+
+  /* --- DIAG: rapid 6 blinks to confirm thread runs --- */
+  for (i = 0; i < 6; i++)
   {
-    tx_thread_sleep(100);
+    HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+    tx_thread_sleep(5);
   }
 
+  printf("ETH: waiting IP init+link...\r\n");
+  if (nx_ip_status_check(&NetXDuoEthIpInstance, NX_IP_INITIALIZE_DONE | NX_IP_LINK_ENABLED, &actual_status, NX_APP_DEFAULT_TIMEOUT) != NX_SUCCESS)
+  {
+    printf("ETH: timeout! status=%ld\r\n", actual_status);
+    while(1) { HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin); tx_thread_sleep(50); }
+  }
+  printf("ETH: IP init+link done (status=%ld)\r\n", actual_status);
+
+  /* Enable promiscuous mode to bypass MAC filter */
+  SET_BIT(ETH->MACPFR, ETH_MACPFR_PR);
+  printf("ETH: promiscuous mode enabled\r\n");
+
+  /* Check DMA status for errors */
+  {
+      uint32_t dma_sr = ETH->DMACSR;
+      printf("ETH: DMACSR=0x%08lX (NIS=%lu, RIS=%lu, TIS=%lu, AIS=%lu, FBE=%lu)\r\n",
+          dma_sr,
+          (dma_sr >> 0) & 1,
+          (dma_sr >> 6) & 1,
+          (dma_sr >> 2) & 1,
+          (dma_sr >> 1) & 1,
+          (dma_sr >> 4) & 1);
+  }
+
+  /* --- Check PHY link state --- */
+  link_state = nx_eth_phy_get_link_state();
+  printf("ETH: link state in app thread = %ld\r\n", link_state);
+  if (link_state <= ETH_PHY_STATUS_LINK_DOWN)
+  {
+    /* Link down - fast continuous blink */
+    for (i = 0; i < 10; i++)
+    {
+      HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
+      tx_thread_sleep(10);
+      HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
+      tx_thread_sleep(10);
+    }
+    /* Then solid ON so user knows link-down was detected */
+    HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
+  }
+
+  /* --- DIAG: long OFF → OFF = link-up, ready --- */
+  HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
+
+  /* Set our IP address */
+   nx_ip_address_set(&NetXDuoEthIpInstance, IP_ADDRESS(192,168,0,100), IP_ADDRESS(255,255,255,0));
+
+  /* --- Test 1: loopback ping (to self) --- */
+  {
+      NX_PACKET *resp;
+      printf("ETH: loopback ping 192.168.0.22...\r\n");
+      ret = nx_icmp_ping(&NetXDuoEthIpInstance, IP_ADDRESS(192,168,0,22),
+                         "ping", 4, &resp, 200);
+      printf("ETH: loopback ping=%u (%s)\r\n", ret, ret==NX_SUCCESS?"OK":"FAIL");
+      if (ret == NX_SUCCESS) nx_packet_release(resp);
+  }
+
+  /* --- Test 2: external ping (through Ethernet driver) --- */
+  {
+      NX_PACKET *resp;
+      printf("ETH: waiting for external ping (30s)...\r\n");
+      /* Sleep 5s to let PC ping us */
+      for (i = 0; i < 250; i++) { tx_thread_sleep(20); } /* ~5s */
+      printf("ETH: now pinging 192.168.0.1...\r\n");
+      ret = nx_icmp_ping(&NetXDuoEthIpInstance, IP_ADDRESS(192,168,0,1),
+                         "ping", 4, &resp, 200);
+      printf("ETH: external ping=%u (%s)\r\n", ret, ret==NX_SUCCESS?"OK":"FAIL");
+      printf("ETH: external ping=%u (%s)\r\n", ret, ret==NX_SUCCESS?"OK":"FAIL");
+      if (ret == NX_SUCCESS) nx_packet_release(resp);
+
+      ETH_DMADescTypeDef *txd0 = (ETH_DMADescTypeDef *)ETH->DMACTDLAR;
+      ETH_DMADescTypeDef *rxd0 = (ETH_DMADescTypeDef *)ETH->DMACRDLAR;
+      printf("ETH: TX_DESC0=0x%08lX (OWN=%lu) RX_DESC0=0x%08lX (OWN=%lu)\r\n",
+          txd0[0].DESC3, (txd0[0].DESC3>>31)&1,
+          rxd0[0].DESC3, (rxd0[0].DESC3>>31)&1);
+      printf("ETH: DMACSR=0x%08lX DMACIER=0x%08lX\r\n",
+          ETH->DMACSR, ETH->DMACIER);
+      printf("ETH: NVIC_ISER[3]=0x%08lX\r\n", NVIC->ISER[3]);
+  }
+
+  /* --- IP initialized and link up --- */
   ret = nx_tcp_socket_create(&NetXDuoEthIpInstance, &TcpServer, "TCP Server",
                              NX_IP_NORMAL, NX_FRAGMENT_OKAY, NX_IP_TIME_TO_LIVE, 1024, NX_NULL, NX_FALSE);
   if (ret != NX_SUCCESS)
   {
     while (1)
     {
-      tx_thread_sleep(100);
+      HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+      tx_thread_sleep(50);
     }
   }
 
@@ -204,7 +298,8 @@ static VOID nx_app_thread_entry (ULONG thread_input)
   {
     while (1)
     {
-      tx_thread_sleep(100);
+      HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+      tx_thread_sleep(50);
     }
   }
 
@@ -215,6 +310,9 @@ static VOID nx_app_thread_entry (ULONG thread_input)
     {
       continue;
     }
+
+    static char scpi_rx_buf[256];
+    int scpi_rx_len = 0;
 
     while (1)
     {
@@ -229,22 +327,45 @@ static VOID nx_app_thread_entry (ULONG thread_input)
       }
 
       nx_packet_data_retrieve(packet, data, &bytes_read);
-      nx_packet_release(packet);
 
-      if (bytes_read >= 6)
+      for (ULONG i = 0; i < bytes_read && scpi_rx_len < (int)sizeof(scpi_rx_buf) - 1; i++)
       {
-        if (data[0] == 'L' && data[1] == 'E' && data[2] == 'D' && data[3] == '2')
+        char c = (char)data[i];
+        if (c == '\n')
         {
-          if (data[5] == '1' || data[5] == 'N')
+          scpi_rx_buf[scpi_rx_len] = 0;
+
+          if (scpi_rx_len > 0)
           {
-            HAL_GPIO_WritePin(USER_LED2_GPIO_Port, USER_LED2_Pin, GPIO_PIN_SET);
+            char resp[SCPI_MAX_RESPONSE];
+            int rlen = scpi_parser.execute(scpi_rx_buf, resp, sizeof(resp));
+
+            NX_PACKET *tx_pkt;
+            if (nx_packet_allocate(NetXDuoEthIpInstance.nx_ip_default_packet_pool,
+                                   &tx_pkt, NX_TCP_PACKET, 20) == NX_SUCCESS)
+            {
+              if ((ULONG)rlen <= (ULONG)(tx_pkt->nx_packet_data_end - tx_pkt->nx_packet_prepend_ptr))
+              {
+                memcpy(tx_pkt->nx_packet_prepend_ptr, resp, (size_t)rlen);
+                tx_pkt->nx_packet_length = (ULONG)rlen;
+                tx_pkt->nx_packet_append_ptr = tx_pkt->nx_packet_prepend_ptr + rlen;
+                nx_tcp_socket_send(&TcpServer, tx_pkt, 200);
+              }
+              else
+              {
+                nx_packet_release(tx_pkt);
+              }
+            }
           }
-          else
-          {
-            HAL_GPIO_WritePin(USER_LED2_GPIO_Port, USER_LED2_Pin, GPIO_PIN_RESET);
-          }
+          scpi_rx_len = 0;
+        }
+        else if (c != '\r')
+        {
+          scpi_rx_buf[scpi_rx_len++] = c;
         }
       }
+
+      nx_packet_release(packet);
     }
 
     nx_tcp_server_socket_unaccept(&TcpServer);

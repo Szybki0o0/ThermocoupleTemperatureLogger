@@ -57,10 +57,10 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define LTC_INTERRUPT_Pin GPIO_PIN_5
+#define LTC_INTERRUPT_GPIO_Port GPIOE
 #define SD_Detect_Pin GPIO_PIN_13
 #define SD_Detect_GPIO_Port GPIOC
-#define HW_ID0_Pin GPIO_PIN_0
-#define HW_ID0_GPIO_Port GPIOF
 #define HW_ID1_Pin GPIO_PIN_1
 #define HW_ID1_GPIO_Port GPIOF
 #define HW_ID2_Pin GPIO_PIN_2
@@ -91,16 +91,12 @@ void Error_Handler(void);
 #define SPI2_CS_GPIO_Port GPIOB
 #define Encoder_CH1_Pin GPIO_PIN_6
 #define Encoder_CH1_GPIO_Port GPIOC
+#define Encoder_CH2_Pin GPIO_PIN_7
+#define Encoder_CH2_GPIO_Port GPIOC
 #define Encoder_BUTTON_Pin GPIO_PIN_8
 #define Encoder_BUTTON_GPIO_Port GPIOC
 #define LTC_RST_Pin GPIO_PIN_4
 #define LTC_RST_GPIO_Port GPIOD
-#define LTC_INTERRUPT_Pin GPIO_PIN_5
-#define LTC_INTERRUPT_GPIO_Port GPIOD
-#define SPI1_CS_Pin GPIO_PIN_6
-#define SPI1_CS_GPIO_Port GPIOD
-#define Encoder_CH2_Pin GPIO_PIN_5
-#define Encoder_CH2_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 #define USER_LED1_Pin GPIO_PIN_8

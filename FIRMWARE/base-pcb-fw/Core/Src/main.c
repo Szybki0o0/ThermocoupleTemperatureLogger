@@ -20,18 +20,17 @@
 #include "app_threadx.h"
 #include "main.h"
 #include "eth.h"
-#include "gpdma.h"
 #include "i2c.h"
 #include "icache.h"
-#include "octospi.h"
 #include "sdmmc.h"
-#include "spi.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
+#include "nx_stm32_phy_driver.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +56,6 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-void PeriphCommonClock_Config(void);
 /* USER CODE BEGIN PFP */
 extern void cpp_main(void);
 /* USER CODE END PFP */
@@ -90,28 +88,46 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
-  /* Configure the peripherals common clocks */
-  PeriphCommonClock_Config();
-
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_GPDMA1_Init();
   MX_ETH_Init();
   //MX_SDMMC1_SD_Init();
-  MX_SPI1_Init();
-  MX_SPI2_Init();
   MX_I2C1_Init();
   MX_TIM3_Init();
-  MX_OCTOSPI1_Init();
   MX_ICACHE_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-  HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_SET);
-  HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
-  cpp_main();
+  printf("Main: reached pre-scheduler init\r\n");
+
+  /* ETH PHY link test */
+  printf("ETH: initializing PHY...\r\n");
+  if (nx_eth_phy_init() == ETH_PHY_STATUS_OK) {
+      printf("ETH: PHY init OK\r\n");
+      int32_t link;
+      for (int i = 0; i < 30; i++) {
+          link = nx_eth_phy_get_link_state();
+          if (link >= ETH_PHY_STATUS_100MBITS_FULLDUPLEX) break;
+          HAL_Delay(100);
+      }
+      printf("ETH: PHY link state = %ld\r\n", link);
+      if (link >= ETH_PHY_STATUS_100MBITS_FULLDUPLEX) {
+          printf("ETH: LINK UP - %s %s\r\n",
+              (link <= ETH_PHY_STATUS_100MBITS_HALFDUPLEX) ? "100Mbps" : "10Mbps",
+              (link == ETH_PHY_STATUS_100MBITS_FULLDUPLEX || link == ETH_PHY_STATUS_10MBITS_FULLDUPLEX) ? "FDX" : "HDX");
+      } else if (link == ETH_PHY_STATUS_AUTONEGO_NOT_DONE) {
+          printf("ETH: autoneg not done\r\n");
+      } else {
+          printf("ETH: LINK DOWN\r\n");
+      }
+  } else {
+      printf("ETH: PHY init FAILED\r\n");
+  }
+
+  printf("Main: starting ThreadX scheduler (tx_kernel_enter)\r\n");
   /* USER CODE END 2 */
 
   MX_ThreadX_Init();
@@ -147,13 +163,8 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSI
-                              |RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV2;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLL1_SOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 4;
@@ -188,24 +199,6 @@ void SystemClock_Config(void)
   /** Configure the programming delay
   */
   __HAL_FLASH_SET_PROGRAM_DELAY(FLASH_PROGRAMMING_DELAY_2);
-}
-
-/**
-  * @brief Peripherals Common Clock Configuration
-  * @retval None
-  */
-void PeriphCommonClock_Config(void)
-{
-  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
-
-  /** Initializes the peripherals clock
-  */
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_CKPER;
-  PeriphClkInitStruct.CkperClockSelection = RCC_CLKPSOURCE_HSI;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
 }
 
 /* USER CODE BEGIN 4 */

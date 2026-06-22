@@ -44,6 +44,7 @@ add_subdirectory(cmake/stm32cubemx)
 # Force C++ compilation for CubeMX-generated C files that include C++ headers
 set_source_files_properties(
     Core/Src/app_threadx.c
+    NetXDuo/App/app_netxduo.c
     PROPERTIES LANGUAGE CXX
 )
 
@@ -56,10 +57,13 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     Core/Src/main.cpp
     App/Src/lcd_i2c.cpp
+    App/Src/ChannelManager.cpp
+    App/Src/ScpiParser.cpp
     App/Src/threads/LedThread.cpp
     App/Src/threads/LCDThread.cpp
     App/Src/threads/EncoderThread.cpp
     App/Src/threads/EthThread.cpp
+    App/Src/SdCard.cpp
 )
 
 # Add include paths

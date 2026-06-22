@@ -56,8 +56,6 @@
 
 /* External variables --------------------------------------------------------*/
 extern ETH_HandleTypeDef heth;
-extern DMA_HandleTypeDef handle_GPDMA1_Channel1;
-extern XSPI_HandleTypeDef hxspi1;
 extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN EV */
@@ -163,20 +161,6 @@ void DebugMon_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief This function handles GPDMA1 Channel 1 global interrupt.
-  */
-void GPDMA1_Channel1_IRQHandler(void)
-{
-  /* USER CODE BEGIN GPDMA1_Channel1_IRQn 0 */
-
-  /* USER CODE END GPDMA1_Channel1_IRQn 0 */
-  HAL_DMA_IRQHandler(&handle_GPDMA1_Channel1);
-  /* USER CODE BEGIN GPDMA1_Channel1_IRQn 1 */
-
-  /* USER CODE END GPDMA1_Channel1_IRQn 1 */
-}
-
-/**
   * @brief This function handles TIM6 global interrupt.
   */
 void TIM6_IRQHandler(void)
@@ -188,20 +172,6 @@ void TIM6_IRQHandler(void)
   /* USER CODE BEGIN TIM6_IRQn 1 */
 
   /* USER CODE END TIM6_IRQn 1 */
-}
-
-/**
-  * @brief This function handles OCTOSPI1 global interrupt.
-  */
-void OCTOSPI1_IRQHandler(void)
-{
-  /* USER CODE BEGIN OCTOSPI1_IRQn 0 */
-
-  /* USER CODE END OCTOSPI1_IRQn 0 */
-  HAL_XSPI_IRQHandler(&hxspi1);
-  /* USER CODE BEGIN OCTOSPI1_IRQn 1 */
-
-  /* USER CODE END OCTOSPI1_IRQn 1 */
 }
 
 /**
