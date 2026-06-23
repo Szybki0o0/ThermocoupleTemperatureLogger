@@ -58,7 +58,9 @@ Software:
   - Montaż i uruchomienie
  
 - Jakub Konior:
-  - TODO
+  - Konfiguracja Peryferiów STM32
+  - Schemat
+  - Oprogramowanie
 
 ---
 *Autorzy: Mateusz Gąsiorowski && Jakub Konior*
